@@ -1,0 +1,13 @@
+{
+  "name": "hmis",
+  "version": "1.0.0",
+  "description": "An enterprise-grade, full-stack Hospital Management & Integrated Healthcare System (HMIS) engineered with a **Modular Monolith** architecture. Designed for clinical reliability, strict role-based access control (RBAC), high-throughput transactional integrity, and a healthcare SaaS user experience.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
