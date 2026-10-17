@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog } from '@/components/ui/dialog';
 import { Input, Select } from '@/components/ui/input';
+import { RoleGate } from '@/components/auth/RoleGate';
 import {
   Receipt,
   Plus,
@@ -166,9 +167,11 @@ export default function BillingPage() {
             </p>
           </div>
 
-          <Button onClick={() => setIsCreateOpen(true)}>
-            <Plus className="w-4 h-4 mr-1.5" /> Generate New Invoice
-          </Button>
+          <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN', 'ACCOUNTANT', 'RECEPTIONIST']}>
+            <Button onClick={() => setIsCreateOpen(true)}>
+              <Plus className="w-4 h-4 mr-1.5" /> Generate New Invoice
+            </Button>
+          </RoleGate>
         </div>
 
         {/* Financial KPI Summary Cards */}
@@ -337,9 +340,11 @@ export default function BillingPage() {
                         </Button>
 
                         {inv.status !== 'PAID' && (
-                          <Button size="sm" onClick={() => openPayModal(inv)}>
-                            <CreditCard className="w-3.5 h-3.5 mr-1" /> Settle
-                          </Button>
+                          <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN', 'ACCOUNTANT', 'RECEPTIONIST']}>
+                            <Button size="sm" onClick={() => openPayModal(inv)}>
+                              <CreditCard className="w-3.5 h-3.5 mr-1" /> Settle
+                            </Button>
+                          </RoleGate>
                         )}
                       </div>
                     </TableCell>

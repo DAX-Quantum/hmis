@@ -29,6 +29,7 @@ interface AuthContextType {
   quickLogin: (roleName: string) => Promise<void>;
   logout: () => void;
   hasPermission: (permission: string) => boolean;
+  hasRole: (roles: string | string[]) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -147,6 +148,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return user.permissions?.includes(permission) || false;
   };
 
+  const hasRole = (roles: string | string[]): boolean => {
+    if (!user?.role) return false;
+    if (user.role === 'SUPER_ADMIN') return true;
+    if (Array.isArray(roles)) {
+      return roles.includes(user.role);
+    }
+    return user.role === roles;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -159,6 +169,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         quickLogin,
         logout,
         hasPermission,
+        hasRole,
       }}
     >
       {children}

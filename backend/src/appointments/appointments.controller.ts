@@ -4,16 +4,19 @@ import { AppointmentsService } from './appointments.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentStatusDto } from './dto/update-status.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { AppointmentStatus } from '@prisma/client';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { AppointmentStatus, UserRole } from '@prisma/client';
 
 @ApiTags('appointments')
 @Controller('appointments')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class AppointmentsController {
   constructor(private appointmentsService: AppointmentsService) {}
 
   @Post()
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.NURSE, UserRole.RECEPTIONIST, UserRole.PATIENT)
   @ApiOperation({ summary: 'Book a new appointment' })
   create(@Body() createAppointmentDto: CreateAppointmentDto) {
     return this.appointmentsService.create(createAppointmentDto);
@@ -51,6 +54,7 @@ export class AppointmentsController {
   }
 
   @Patch(':id/status')
+  @Roles(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.NURSE, UserRole.RECEPTIONIST)
   @ApiOperation({ summary: 'Update appointment lifecycle status' })
   updateStatus(@Param('id') id: string, @Body() updateDto: UpdateAppointmentStatusDto) {
     return this.appointmentsService.updateStatus(id, updateDto);

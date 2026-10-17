@@ -37,6 +37,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { Dialog } from '@/components/ui/dialog';
+import { RoleGate } from '@/components/auth/RoleGate';
 
 export default function PatientDetailPage() {
   const params = useParams();
@@ -240,13 +241,15 @@ export default function PatientDetailPage() {
 
             {/* Quick Contact & Action */}
             <div className="flex flex-wrap items-center gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setIsUploadModalOpen(true)}
-              >
-                <FileUp className="w-3.5 h-3.5 mr-1 text-blue-600" /> Upload Document
-              </Button>
+              <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN', 'DOCTOR', 'NURSE', 'LAB_TECHNICIAN', 'RECEPTIONIST']}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setIsUploadModalOpen(true)}
+                >
+                  <FileUp className="w-3.5 h-3.5 mr-1 text-blue-600" /> Upload Document
+                </Button>
+              </RoleGate>
               <Link href={`/appointments?patientId=${patient.id}`}>
                 <Button size="sm">
                   <Calendar className="w-3.5 h-3.5 mr-1" /> Book Appointment
@@ -801,9 +804,11 @@ export default function PatientDetailPage() {
                     className="w-full text-xs pl-8 pr-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <Button size="sm" onClick={() => setIsUploadModalOpen(true)}>
-                  <Plus className="w-3.5 h-3.5 mr-1" /> Upload
-                </Button>
+                <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN', 'DOCTOR', 'NURSE', 'LAB_TECHNICIAN', 'RECEPTIONIST']}>
+                  <Button size="sm" onClick={() => setIsUploadModalOpen(true)}>
+                    <Plus className="w-3.5 h-3.5 mr-1" /> Upload
+                  </Button>
+                </RoleGate>
               </div>
             </div>
 
@@ -831,14 +836,16 @@ export default function PatientDetailPage() {
                           ? 'Attach lab reports, discharge summaries, radiographs, or insurance documents to this patient record.'
                           : 'No documents match your current filter criteria.'}
                       </p>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="mt-4"
-                        onClick={() => setIsUploadModalOpen(true)}
-                      >
-                        <FileUp className="w-3.5 h-3.5 mr-1.5 text-blue-600" /> Upload First Document
-                      </Button>
+                      <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN', 'DOCTOR', 'NURSE', 'LAB_TECHNICIAN', 'RECEPTIONIST']}>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="mt-4"
+                          onClick={() => setIsUploadModalOpen(true)}
+                        >
+                          <FileUp className="w-3.5 h-3.5 mr-1.5 text-blue-600" /> Upload First Document
+                        </Button>
+                      </RoleGate>
                     </CardContent>
                   </Card>
                 );
@@ -934,14 +941,16 @@ export default function PatientDetailPage() {
                                 >
                                   <Download className="w-3.5 h-3.5" />
                                 </a>
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  className="h-7 px-2 text-xs text-rose-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/50"
-                                  onClick={() => handleDeleteDocument(doc.id)}
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </Button>
+                                <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN']}>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="h-7 px-2 text-xs text-rose-500 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/50"
+                                    onClick={() => handleDeleteDocument(doc.id)}
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </Button>
+                                </RoleGate>
                               </div>
                             </TableCell>
                           </TableRow>
@@ -1237,14 +1246,16 @@ export default function PatientDetailPage() {
 
             {/* Actions Bar */}
             <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-rose-500 hover:text-rose-700"
-                onClick={() => handleDeleteDocument(previewDocument.id)}
-              >
-                <Trash2 className="w-3.5 h-3.5 mr-1" /> Delete Document
-              </Button>
+              <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN']}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-rose-500 hover:text-rose-700"
+                  onClick={() => handleDeleteDocument(previewDocument.id)}
+                >
+                  <Trash2 className="w-3.5 h-3.5 mr-1" /> Delete Document
+                </Button>
+              </RoleGate>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"

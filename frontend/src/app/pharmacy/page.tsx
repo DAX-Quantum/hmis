@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog } from '@/components/ui/dialog';
 import { Input, Select } from '@/components/ui/input';
+import { RoleGate } from '@/components/auth/RoleGate';
 import {
   Pill,
   AlertTriangle,
@@ -313,27 +314,29 @@ export default function PharmacyPage() {
                           >
                             Batches ({m.inventories?.length || 0})
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={() => {
-                              setSelectedMed(m);
-                              setIsRestockOpen(true);
-                            }}
-                          >
-                            <Plus className="w-3 h-3 mr-1" /> Restock
-                          </Button>
-                          <Button
-                            size="sm"
-                            disabled={m.totalStock <= 0}
-                            onClick={() => {
-                              setSelectedMed(m);
-                              setDispenseQty(1);
-                              setIsDispenseOpen(true);
-                            }}
-                          >
-                            Dispense
-                          </Button>
+                          <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN', 'PHARMACIST']}>
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              onClick={() => {
+                                setSelectedMed(m);
+                                setIsRestockOpen(true);
+                              }}
+                            >
+                              <Plus className="w-3 h-3 mr-1" /> Restock
+                            </Button>
+                            <Button
+                              size="sm"
+                              disabled={m.totalStock <= 0}
+                              onClick={() => {
+                                setSelectedMed(m);
+                                setDispenseQty(1);
+                                setIsDispenseOpen(true);
+                              }}
+                            >
+                              Dispense
+                            </Button>
+                          </RoleGate>
                         </div>
                       </TableCell>
                     </TableRow>

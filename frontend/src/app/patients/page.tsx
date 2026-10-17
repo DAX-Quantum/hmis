@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input, Select } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog } from '@/components/ui/dialog';
+import { RoleGate } from '@/components/auth/RoleGate';
 import { Users, UserPlus, Search, ArrowRight, Phone, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 
@@ -104,9 +105,11 @@ export default function PatientsPage() {
             </p>
           </div>
 
-          <Button onClick={() => setIsRegisterOpen(true)}>
-            <UserPlus className="w-4 h-4 mr-1.5" /> Register New Patient
-          </Button>
+          <RoleGate allowedRoles={['SUPER_ADMIN', 'ADMIN', 'RECEPTIONIST', 'NURSE', 'DOCTOR']}>
+            <Button onClick={() => setIsRegisterOpen(true)}>
+              <UserPlus className="w-4 h-4 mr-1.5" /> Register New Patient
+            </Button>
+          </RoleGate>
         </div>
 
         {/* Search Bar */}
